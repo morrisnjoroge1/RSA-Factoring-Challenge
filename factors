@@ -1,45 +1,57 @@
-#!/usr/bin/python3
-
 import sys
 import time
 
+
 def factorize(num):
-    '''
-    Takes a number as input and returns a tuple of two factors if the number is not a prime, or None if the number is prime.
+    """Takes a number as input.
+
     Args:
         num: input integer.
     Return:
-        A tuple of two factors if the number is not a prime. None if the number is prime.
-    '''
+        A tuple of two factors if the number is not a prime.
+        None if the number is prime.
+    """
+
+    if num <= 1:
+        return None
+
     for i in range(2, int(num ** 0.5) + 1):
         if num % i == 0:
             return (i, num // i)
+
     return None
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: factors <file>")
-        sys.exit(1)
 
-    input_file = sys.argv[1]
+def main(input_file):
+    """Reads the input file and factorizes the numbers in it.
 
-    try:
-        with open(input_file, 'r') as f:
-            lines = f.read().splitlines()
-    except FileNotFoundError:
-        print("File not found")
-        sys.exit(1)
+    Args:
+        input_file: The path to the input file.
+    """
 
     start_time = time.time()
+
+    try:
+        with open(input_file, "r") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print("File not found")
+        exit()
 
     for line in lines:
         num = int(line.strip())
         factors = factorize(num)
         if factors:
-            print(f"{num} = {factors[0]} * {factors[1]}")
+            print(f"{num}={factors[0]}*{factors[1]}")
 
-        # Check for time limit
-        if time.time() - start_time > 5:
-            print("Time limit exceeded")
-            sys.exit(1)
+    if time.time() - start_time > 5:
+        print("Time limit exceeded")
+        exit()
 
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        exit()
+
+    main(sys.argv[1])
